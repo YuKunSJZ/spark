@@ -1,0 +1,97 @@
+1.下载Hadoop
+http://www.apache.org/dyn/closer.cgi/hadoop/common
+2.解压
+hadoop-2.7.3.tar.gz 点右键“解压到hadoop-2.7.3”
+文件夹路径 xxx/xxxx/hadoop-2.7.3
+复制hadoop-2.7.3文件夹到 d盘 或者 e盘 的根目录 （在这里我安装到了E盘）
+3.原版的Hadoop不支持Windows系统，我们需要修改一些配置方便在Windows上运行
+所需文件hadooponwindows-master.zip 解压
+复制解压开的bin文件和etc文件到hadoop-2.7.3文件中，并替换原有的bin和etc文件
+4.配置Hadoop的环境变量
+配置Java环境变量
+新建变量名：JAVA_HOME
+输入路径：D:\Softwares\jdk1.8 （这里是以我的jdk地址为例，请根据自己的jdk地址来设置）
+在path中最前面加上：%JAVA_HOME%\bin;
+配置Hadoop环境变量
+新建变量名：HADOOP_HOME
+输入路径：E:\hadoop-2.7.3
+在path中最前面加上：%HADOOP_HOME%\bin;
+5.确认hadoop配置的jdk的路径
+在hadoop-2.7.3\etc\hadoop找到hadoop-env.cmd
+右键用一个文本编辑器打开
+找到 set JAVA_HOME=C:\PROGRA~1\Java\jdk1.7.0_67
+将C:\PROGRA~1\Java\jdk1.7.0_67 改为 D:\Softwares\jdk1.8（在环境变量设置中JAVA_HOME的值）
+(如果路径中有“Program Files”，则将Program Files改为 PROGRA~1
+
+6.配置好上面所有操作后，win+R 输入cmd打开命令提示符，然后输入hadoop version，按回车，如果出现如图所示结果，则说明安装成功
+
+
+JAVA_HOME D:\Softwares\jdk1.8
+在path中最前面加上：%JAVA_HOME%\bin;
+
+
+1 HADOOP_HOME C:\hadoop-2.8.5\hadoop-2.8.5
+
+2 path ;%HADOOP_HOME%\bin; 
+
+3下载winutils
+
+winutils是一套类库，是第三方的，下载地址:
+
+https://github.com/steveloughran/winutils
+
+core-site.xml文件
+
+
+<configuration>
+        <property>
+                <name>fs.defaultFS</name>
+                <value>hdfs://localhost:9000</value>
+        </property>
+</configuration>
+
+hdfs-site.xml，需要根据下面的配置文件的目录结构在hadoop\data\dfs下建立2个文件夹，datanode和namenode
+
+<configuration>
+        <property>
+                <name>dfs.replication</name>
+                <value>1</value>
+        </property>
+        <property>
+                <name>dfs.namenode.name.dir</name>
+                <value>file:/hadoop/data/dfs/namenode</value>
+        </property>
+        <property>
+                <name>dfs.datanode.data.dir</name>
+                <value>file:/hadoop/data/dfs/datanode</value>
+        </property>
+</configuration>
+
+
+mapred-site.xml，这个文件原来叫mapred-site.xml.template，改下名字
+
+
+<configuration>
+        <property>
+           <name>mapreduce.framework.name</name>
+           <value>yarn</value>
+        </property>
+</configuration>
+yarn-site.xml
+
+<configuration>
+        <property>
+           <name>yarn.nodemanager.aux-services</name>
+           <value>mapreduce_shuffle</value>
+        </property>
+        <property>
+           <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+           <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+        </property>
+</configuration>
+hadoop-env.cmd
+
+    set JAVA_HOME=C:\Progra~1\Java\jdk1.7.0_80
+也可以使用java_home的变量
+
+http://localhost:50070/dfshealth.html#tab-overview

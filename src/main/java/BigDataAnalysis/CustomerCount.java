@@ -1,9 +1,5 @@
 package BigDataAnalysis;
-
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
-
 import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
@@ -117,13 +113,14 @@ public class CustomerCount {
 		souceTable = "m_fact_stock_finance_end_month";
 		write2Table= "dm_db.dm_customer_cnt_in_agent_product";
 		
-		this.setDataSourcePath("D:\\spark\\datasorce\\m_fact_stock_finance_end_month.csv");
+		//this.setDataSourcePath("D:\\spark\\datasorce\\m_fact_stock_finance_end_month.csv");
+		this.setDataSourcePath(ConfigrationManager.getProperty(Constants.JDBC_URL));
 		SQLContext mySQLcontext = registerSourceTable(dataSourcePath, souceTable);
 				
 		Dataset<Row> dsStockCustomerCountAgg = mySQLcontext.sql(""
 				+ "select "
 				+ " sysid "
-				+ ",'2018-02-28' as stock_date "
+				+ ",'2018-01-20' as stock_date "
 				+ ",'all_stock_cnt' as stock_type"
 				+ ",count(distinct idcode) as customer_cnt "
 				+ ",agent_id "
