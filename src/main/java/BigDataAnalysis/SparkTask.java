@@ -23,11 +23,8 @@ public class SparkTask {
 				.setAppName(ConfigrationManager.getProperty(Constants.SPARK_APP_NAME))
 				.setMaster("local");
 		JavaSparkContext javasc = new JavaSparkContext(conf);
-//		CustomerCount myCustomerCount = new CustomerCount(javasc);
-//		
-//		myCustomerCount.run(new BigDataTask("1"));
-		FundCompany myFundCompany = new FundCompany(javasc);
-		myFundCompany.insertStockCnt();
+		FundCompany  myFundCompany = new FundCompany(javasc);
+		myFundCompany.load2ODS();
 		javasc.close();
 		
 	}
