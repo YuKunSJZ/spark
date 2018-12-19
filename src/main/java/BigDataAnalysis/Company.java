@@ -15,7 +15,7 @@ public abstract class Company {
 	
 	protected abstract SQLContext registerSourceTable(String sourceStr,String tableName);
 	
-	protected abstract SQLContext write2Mysql(Dataset<Row> ds2Write,String toTableName);
+	protected abstract void write2Mysql(Dataset<Row> ds2Write,String toTableName);
 	
 	protected abstract void load2ODS(); 
 

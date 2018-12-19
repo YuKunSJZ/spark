@@ -1,7 +1,5 @@
 package Constants;
 
-import org.apache.spark.sql.SQLContext;
-
 public interface Constants {
 	String JDBC_DRIVER = "JDBC_DRIVER";
 	String JDBC_USER = "JDBC_USER";
@@ -17,5 +15,6 @@ public interface Constants {
 	String COMPANY_FUND_JDBC = "COMPANY_FUND_JDBC";
 	String COMPANY_FUND_JDBC_USER = "COMPANY_FUND_JDBC_USER";
 	String COMPANY_FUND_JDBC_PASS = "COMPANY_FUND_JDBC_PASS";
+	String COMPANY_JDBC_DRIVER = "COMPANY_JDBC_DRIVER";
 
 }
