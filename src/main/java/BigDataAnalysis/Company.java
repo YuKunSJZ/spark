@@ -18,9 +18,10 @@ public abstract class Company {
 	protected abstract void write2Mysql(Dataset<Row> ds2Write,String toTableName);
 	
 	protected abstract void load2ODS(); 
-
 	
+	protected abstract void makeMarketReport(); 
 	
-	
+	protected abstract void create(); 
+	protected abstract void close(); 
 
 }

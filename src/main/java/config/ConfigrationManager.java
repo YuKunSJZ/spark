@@ -11,6 +11,7 @@ public class ConfigrationManager {
 		try {
 			InputStream in = ConfigrationManager.class
 					.getClassLoader().getResourceAsStream("myconfigtest.txt");
+			
 			prop.load(in);
 			
 		} catch (Exception e) {

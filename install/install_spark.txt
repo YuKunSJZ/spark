@@ -95,3 +95,17 @@ hadoop-env.cmd
 也可以使用java_home的变量
 
 http://localhost:50070/dfshealth.html#tab-overview
+
+
+project facests 
+1.点击：Help->Install New Software
+2.点击add添加
+name:Kepler
+location:http://download.eclipse.org/releases/kepler
+3.等待底下出现信息勾选：Web,XML, Java EE and OSGi Enterprise Development 
+4.一直点击next，最后完成。
+
+War do not have lib:
+The jar dependencies for Eclipse to include in a war file not placed in WEB-INF/lib is not managed by the usual "project export/imports" but by a separate panel (3.6: Deployment Assembly, 3.5: Java EE Module Dependencies) in the preferences of the dynamic web project.
+
+

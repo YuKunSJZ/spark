@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.spark.SparkConf;
 import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
@@ -22,13 +23,25 @@ public class FundCompany extends Company{
 	private Properties dataSourceConnProp;
 	private Properties dataDestConnProp;
 	private String sourceSchemaName;
-	public FundCompany(JavaSparkContext _javasc) {
+	public FundCompany() {
 		setConnProp();
-		javasc = _javasc;
+		create();
 		sourceSchemaName = "guquan_zhengshi";
 	}
 	
-
+	@Override
+	protected void create() {
+		SparkConf conf = new SparkConf()
+				.setAppName(ConfigrationManager.getProperty(Constants.SPARK_APP_NAME))
+				.setMaster("local");
+				javasc = new JavaSparkContext(conf);
+	}
+	
+	@Override
+	public void close() {
+		javasc.close();
+		
+	}
 
 	@Override
 	protected SQLContext getSQLContext(SparkContext sc) {
@@ -85,13 +98,18 @@ public class FundCompany extends Company{
 	}
 	
 	@Override
-	protected void load2ODS() {
+	public void load2ODS() {
 		Iterator<String> myIterator = getTableList().iterator();
 		while(myIterator.hasNext()) {
 			String tableName = myIterator.next();
 			tableCopy(tableName,"ods_db." + sourceSchemaName.split("_")[0] + "_" + tableName,SaveMode.Overwrite);
 		}
 			
+	}
+	@Override
+	protected void makeMarketReport() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	private void tableCopy(String _sourceTable,String _write2Table,SaveMode _saveMode) {
