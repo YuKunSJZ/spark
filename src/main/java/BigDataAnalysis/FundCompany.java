@@ -108,7 +108,16 @@ public class FundCompany extends Company{
 	}
 	@Override
 	protected void makeMarketReport() {
-		// TODO Auto-generated method stub
+		/**
+		 * guquan_investor
+		 * guquan_fund
+		 * guquan_sys_link
+		 * guquan_admin_company	
+		 * guquan_admin_dept
+		 * guquan_admin_menu
+		 * guquan_admin_users
+		 * guquan_cash
+		 */
 		
 	}
 	
