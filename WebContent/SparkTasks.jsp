@@ -3,7 +3,6 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <%
-
 FundCompany  myFundCompany = new FundCompany();
 myFundCompany.load2ODS();
 myFundCompany.close();
