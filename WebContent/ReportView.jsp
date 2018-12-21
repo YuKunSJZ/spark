@@ -1,13 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<script src="echarts.min.js"></script>
+<meta charset="utf-8">
+<script src="javascript/echarts.min.js"></script>
 <title>Insert title here</title>
 </head>
 <body>
-
+ 	hello world
 </body>
 </html>

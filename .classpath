@@ -6,6 +6,8 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry excluding="java/|resources/" kind="src" path="src/test"/>
+	<classpathentry excluding="java/|resources/" kind="src" path="src/main"/>
 	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
@@ -25,7 +27,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="resources"/>
-	<classpathentry excluding="main/java/|main/resources/|test/java/|test/resources/" kind="src" path="src"/>
+	<classpathentry excluding="main/java/|main/resources/|test/java/|test/resources/|test/|main/" kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
