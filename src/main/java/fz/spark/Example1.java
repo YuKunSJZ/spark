@@ -10,6 +10,8 @@ import org.apache.spark.sql.SparkSession;
 import scala.Tuple2;
 
 public class Example1 {
+	private static String abc;
+
 	/**
      * @param args
      */

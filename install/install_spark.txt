@@ -124,3 +124,28 @@ COMPANY_JDBC_DRIVER=com.mysql.jdbc.Driver
 COMPANY_FUND_JDBC=jdbc:mysql://47.93.14.254:3306/guquan_zhengshi
 COMPANY_FUND_JDBC_USER=root
 COMPANY_FUND_JDBC_PASS=ruian1127yb99
+
+
+json:
+JSON 值
+JSON 值可以是：
+
+数字（整数或浮点数）
+字符串（在双引号中）
+逻辑值（true 或 false）
+数组（在方括号中）
+对象（在花括号中）
+null
+
+{"firstname":"zhao","lastname":"dao"}
+var employee = [
+{"firstname":"zhao","lastname":"dao"},
+{"firstname":"shangguan","lastname":"hong"}
+]
+
+emplyee[0].lastname
+emplyee[0].lastname = "Job"
+
+https://www.cnblogs.com/Dreamer-1/p/5683992.html
+
+
