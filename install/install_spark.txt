@@ -147,5 +147,19 @@ emplyee[0].lastname
 emplyee[0].lastname = "Job"
 
 https://www.cnblogs.com/Dreamer-1/p/5683992.html
+https://blog.csdn.net/u013485584/article/details/71440397
+
+
+This is the update site for Spket IDE.
+To use it, open Eclipse's UpdateManager (under the Help menu in Eclipse) and add a bookmark for
+http://www.agpad.com/update
+1、选择Help -> Software Updates -> Find and Install...-> Search for new features to install ->New remote site... 
+Name: "Spket", Url: "http://www.spket.com/update/"下载完毕重启 Eclipse (http://www.agpad.com/update)
+2、Window -> Preferences -> Spket -> JavaScript Profiles -> New ； 
+输入“ExtJS”点击OK； 
+选择“ExtJS” 并点击“Add Library”然后在下拉条中选取“ExtJS”； 
+选择 “ExtJS”并点击“Add File”，然后在你的./ext-2.x/source目录中(下载ext.zip包解压出来的目录)选取“ext.jsb” 文件(http://www.agpad.com/downloads/spket-1.6.12.zip)； 
+3、设置新的ExtJS Profile，选中并点击“JavaScript Profiles” 对话框右手边的“Defalut”按钮； 
+4、 JS打开方式为 Window -> Preferences ->General-> Editors-> File...选择JS 为 Spket JavaScript Editor(default)*********（这个千万不要忘了！！！）
 
 

@@ -1,0 +1,5 @@
+/**
+ * 
+ */
+
+var myDAte = new Date();
