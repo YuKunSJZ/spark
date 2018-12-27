@@ -72,6 +72,7 @@ public class JDBCHelper {
 		PreparedStatement pstmt = null;
 		int rtn=0;
 		try {
+			System.out.println(sql.toString());
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			rtn = pstmt.executeUpdate();

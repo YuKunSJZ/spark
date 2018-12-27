@@ -149,17 +149,23 @@ emplyee[0].lastname = "Job"
 https://www.cnblogs.com/Dreamer-1/p/5683992.html
 https://blog.csdn.net/u013485584/article/details/71440397
 
+jseclipse
+Open Eclipse -> Go to "Help" -> "Install New Software"
+Select the repository for your version of Eclipse. I have Juno so I selected http://download.eclipse.org/releases/juno
+Expand "Programming Languages" -> Check the box next to "JavaScript Development Tools"
+Click "Next" -> "Next" -> Accept the Terms of the License Agreement -> "Finish"
+Wait for the software to install, then restart Eclipse (by clicking "Yes" button at pop up window)
+Once Eclipse has restarted, open "Window" -> "Preferences" -> Expand "General" and "Editors" -> Click "File Associations" -> Add ".js" to the "File types:" list, if it is not already there
+In the same "File Associations" dialog, click "Add" in the "Associated editors:" section
+Select "Internal editors" radio at the top
+Select "JavaScript Viewer". Click "OK" -> "OK"
+To add JavaScript Perspective: (Optional)
+10. Go to "Window" -> "Open Perspective" -> "Other..."
+11. Select "JavaScript". Click "OK"
 
-This is the update site for Spket IDE.
-To use it, open Eclipse's UpdateManager (under the Help menu in Eclipse) and add a bookmark for
-http://www.agpad.com/update
-1、选择Help -> Software Updates -> Find and Install...-> Search for new features to install ->New remote site... 
-Name: "Spket", Url: "http://www.spket.com/update/"下载完毕重启 Eclipse (http://www.agpad.com/update)
-2、Window -> Preferences -> Spket -> JavaScript Profiles -> New ； 
-输入“ExtJS”点击OK； 
-选择“ExtJS” 并点击“Add Library”然后在下拉条中选取“ExtJS”； 
-选择 “ExtJS”并点击“Add File”，然后在你的./ext-2.x/source目录中(下载ext.zip包解压出来的目录)选取“ext.jsb” 文件(http://www.agpad.com/downloads/spket-1.6.12.zip)； 
-3、设置新的ExtJS Profile，选中并点击“JavaScript Profiles” 对话框右手边的“Defalut”按钮； 
-4、 JS打开方式为 Window -> Preferences ->General-> Editors-> File...选择JS 为 Spket JavaScript Editor(default)*********（这个千万不要忘了！！！）
-
-
+To open .html or .js file with highlighted JavaScript syntax:
+12. (Optional) Select JavaScript Perspective
+13. Browse and Select .html or .js file in Script Explorer in [JavaScript Perspective] (Or Package Explorer [Java Perspective] Or PyDev Package Explorer [PyDev Perspective] Don't matter.)
+14. Right-click on .html or .js file -> "Open With" -> "Other..."
+15. Select "Internal editors"
+16. Select "Java Script Editor". Click "OK" (see JavaScript syntax is now highlighted )

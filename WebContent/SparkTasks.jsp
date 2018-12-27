@@ -4,8 +4,17 @@
 <!DOCTYPE html>
 <%
 FundCompany  myFundCompany = new FundCompany();
-myFundCompany.load2ODS();
+myFundCompany.run();
 myFundCompany.close();
+
+FlowIn myFlowIn = new FlowIn();
+myFlowIn.run();
+
+CapitalCost myCaptalCost = new CapitalCost();
+myCaptalCost.run();
+
+
+
 %>
 <html>
 <head>

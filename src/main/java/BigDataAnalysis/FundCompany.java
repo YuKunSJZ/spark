@@ -163,4 +163,10 @@ public class FundCompany extends Company{
 		System.out.println(logMessage);
 	}
 	
+	public void run() {
+		if(1==2) {
+			load2ODS();
+		}
+	}
+	
 }
