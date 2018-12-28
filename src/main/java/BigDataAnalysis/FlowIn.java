@@ -66,10 +66,566 @@ public class FlowIn {
 		mydb.executeSql(sql.toString());
 
 	}
-	
 	public void run() {
 		ryandzFlowIn();
 		ryanziguanFlowIn();
 	}
+
+	private void oldCode() {
+		/**
+		 * SELECT
+	`c`.`gs_id` AS `gs_id`,
+	`c`.`gs_name` AS `gs_name`,
+	concat(
+		round(
+			(
+				sum(`c`.`tp_capital_cost`) * 100
+			),
+			2
+		),
+		'%'
+	) AS `tp_capital_cost`,
+	concat(
+		round(
+			(
+				sum(`c`.`lm_capital_cost`) * 100
+			),
+			2
+		),
+		'%'
+	) AS `lm_capital_cost`,
+	concat(
+		round(
+			(
+				sum(`c`.`ty_capital_cost`) * 100
+			),
+			2
+		),
+		'%'
+	) AS `ty_capital_cost`
+FROM
+	(
+		SELECT
+			substring_index(`a`.`sysid`, '_', 2) AS `gs_id`,
+			(
+				CASE substring_index(`a`.`sysid`, '_', 2)
+				WHEN 'ryan_dz' THEN
+					'大众财富'
+				WHEN 'ryan_jtcw' THEN
+					'集团理财'
+				WHEN 'ryan_rongzi' THEN
+					'资产管理'
+				ELSE
+					'方泽金服'
+				END
+			) AS `gs_name`,
+			0 AS `tp_capital_cost`,
+			(
+				sum(
+					(
+						(
+							(
+								(`b`.`profit_rate` / 100) * `a`.`contract_amount`
+							) * ifnull(if(b.term<12,b.term,12), 1)
+						) / 12
+					)
+				) / sum(
+					(
+						(
+							`a`.`contract_amount` * ifnull(if(b.term<12,b.term,12), 1)
+						) / 12
+					)
+				)
+			) AS `lm_capital_cost`,
+			0 AS `ty_capital_cost`
+		FROM
+			(
+				(
+					(
+						SELECT
+							`dw_db`.`m_fact_inmoney_finance`.`sysid` AS `sysid`,
+							`dw_db`.`m_fact_inmoney_finance`.`entertime` AS `entertime`,
+							`dw_db`.`m_fact_inmoney_finance`.`product_id` AS `product_id`,
+							`dw_db`.`m_fact_inmoney_finance`.`contract_amount` AS `contract_amount`
+						FROM
+							`dw_db`.`m_fact_inmoney_finance`
+						WHERE
+							(
+								date_format(
+									`dw_db`.`m_fact_inmoney_finance`.`entertime`,
+									'%Y-%m'
+								) = date_format(
+									(
+										(curdate() - INTERVAL 1 DAY) - INTERVAL 1 MONTH
+									),
+									'%Y-%m'
+								)
+							)
+					)
+				) `a`
+				LEFT JOIN (
+					SELECT
+						`dw_db`.`m_dim_product_finance`.`sysid` AS `sysid`,
+						`dw_db`.`m_dim_product_finance`.`id` AS `id`,
+						(
+							CASE
+							WHEN (
+								`dw_db`.`m_dim_product_finance`.`if_current` = '1'
+							) THEN
+								1
+							WHEN (
+								`dw_db`.`m_dim_product_finance`.`sysid` = 'ryan_fzlc_xx_hq'
+							) THEN
+								1
+							WHEN (
+								`dw_db`.`m_dim_product_finance`.`sysid` = 'ryan_fzlc_xs_hq'
+							) THEN
+								1
+							ELSE
+								`dw_db`.`m_dim_product_finance`.`limit_time`
+							END
+						) AS `term`,
+						`dw_db`.`m_dim_product_finance`.`profit_rate` AS `profit_rate`
+					FROM
+						`dw_db`.`m_dim_product_finance`
+				) `b` ON (
+					(
+						(`a`.`product_id` = `b`.`id`)
+						AND (`a`.`sysid` = `b`.`sysid`)
+					)
+				)
+			)
+		GROUP BY
+			`gs_id`,
+			`gs_name`
+		UNION ALL
+			SELECT
+				substring_index(`a`.`sysid`, '_', 2) AS `gs_id`,
+				(
+					CASE substring_index(`a`.`sysid`, '_', 2)
+					WHEN 'ryan_dz' THEN
+						'大众财富'
+					WHEN 'ryan_jtcw' THEN
+						'集团理财'
+					WHEN 'ryan_rongzi' THEN
+					'资产管理'
+					ELSE
+						'方泽金服'
+					END
+				) AS `gs_name`,
+				(
+					sum(
+						(
+							(
+								(
+									(`b`.`profit_rate` / 100) * `a`.`contract_amount`
+								) * ifnull(if(b.term<12,b.term,12), 1)
+							) / 12
+						)
+					) / sum(
+						(
+							(
+								`a`.`contract_amount` * ifnull(if(b.term<12,b.term,12), 1)
+							) / 12
+						)
+					)
+				) AS `tp_capital_cost`,
+				0 AS `lm_capital_cost`,
+				0 AS `ty_capital_cost`
+			FROM
+				(
+					(
+						(
+							SELECT
+								`dw_db`.`m_fact_inmoney_finance`.`sysid` AS `sysid`,
+								`dw_db`.`m_fact_inmoney_finance`.`entertime` AS `entertime`,
+								`dw_db`.`m_fact_inmoney_finance`.`product_id` AS `product_id`,
+								`dw_db`.`m_fact_inmoney_finance`.`contract_amount` AS `contract_amount`
+							FROM
+								`dw_db`.`m_fact_inmoney_finance`
+							WHERE
+								(
+									date_format(
+										`dw_db`.`m_fact_inmoney_finance`.`entertime`,
+										'%Y-%m'
+									) = date_format(
+										(curdate() - INTERVAL 1 DAY),
+										'%Y-%m'
+									)
+								)
+						)
+					) `a`
+					LEFT JOIN (
+						SELECT
+							`dw_db`.`m_dim_product_finance`.`sysid` AS `sysid`,
+							`dw_db`.`m_dim_product_finance`.`id` AS `id`,
+							(
+								CASE
+								WHEN (
+									`dw_db`.`m_dim_product_finance`.`if_current` = '1'
+								) THEN
+									1
+								WHEN (
+									`dw_db`.`m_dim_product_finance`.`sysid` = 'ryan_fzlc_xx_hq'
+								) THEN
+									1
+								WHEN (
+									`dw_db`.`m_dim_product_finance`.`sysid` = 'ryan_fzlc_xs_hq'
+								) THEN
+									1
+								ELSE
+									`dw_db`.`m_dim_product_finance`.`limit_time`
+								END
+							) AS `term`,
+							`dw_db`.`m_dim_product_finance`.`profit_rate` AS `profit_rate`
+						FROM
+							`dw_db`.`m_dim_product_finance`
+					) `b` ON (
+						(
+							(`a`.`product_id` = `b`.`id`)
+							AND (`a`.`sysid` = `b`.`sysid`)
+						)
+					)
+				)
+			GROUP BY
+				`gs_id`,
+				`gs_name`
+			UNION ALL
+				SELECT
+					substring_index(`a`.`sysid`, '_', 2) AS `gs_id`,
+					(
+						CASE substring_index(`a`.`sysid`, '_', 2)
+						WHEN 'ryan_dz' THEN
+							'大众财富'
+						WHEN 'ryan_jtcw' THEN
+							'集团理财'
+						WHEN 'ryan_rongzi' THEN
+							'资产管理'
+						ELSE
+							'方泽金服'
+						END
+					) AS `gs_name`,
+					0 AS `tp_capital_cost`,
+					0 AS `lm_capital_cost`,
+					(
+						sum(
+							(
+								(
+									(
+										(`b`.`profit_rate` / 100) * `a`.`contract_amount`
+									) * ifnull(if(b.term<12,b.term,12), 1)
+								) / 12
+							)
+						) / sum(
+							(
+								(
+									`a`.`contract_amount` * ifnull(if(b.term<12,b.term,12), 1)
+								) / 12
+							)
+						)
+					) AS `ty_capital_cost`
+				FROM
+					(
+						(
+							(
+								SELECT
+									`dw_db`.`m_fact_inmoney_finance`.`sysid` AS `sysid`,
+									`dw_db`.`m_fact_inmoney_finance`.`entertime` AS `entertime`,
+									`dw_db`.`m_fact_inmoney_finance`.`product_id` AS `product_id`,
+									`dw_db`.`m_fact_inmoney_finance`.`contract_amount` AS `contract_amount`
+								FROM
+									`dw_db`.`m_fact_inmoney_finance`
+								WHERE
+									(
+										date_format(
+											`dw_db`.`m_fact_inmoney_finance`.`entertime`,
+											'%Y'
+										) = date_format(
+											(curdate() - INTERVAL 1 DAY),
+											'%Y'
+										)
+									)
+							)
+						) `a`
+						LEFT JOIN (
+							SELECT
+								`dw_db`.`m_dim_product_finance`.`sysid` AS `sysid`,
+								`dw_db`.`m_dim_product_finance`.`id` AS `id`,
+								(
+									CASE
+									WHEN (
+										`dw_db`.`m_dim_product_finance`.`if_current` = '1'
+									) THEN
+										1
+									WHEN (
+										`dw_db`.`m_dim_product_finance`.`sysid` = 'ryan_fzlc_xx_hq'
+									) THEN
+										1
+									WHEN (
+										`dw_db`.`m_dim_product_finance`.`sysid` = 'ryan_fzlc_xs_hq'
+									) THEN
+										1
+									ELSE
+										`dw_db`.`m_dim_product_finance`.`limit_time`
+									END
+								) AS `term`,
+								`dw_db`.`m_dim_product_finance`.`profit_rate` AS `profit_rate`
+							FROM
+								`dw_db`.`m_dim_product_finance`
+						) `b` ON (
+							(
+								(`a`.`product_id` = `b`.`id`)
+								AND (`a`.`sysid` = `b`.`sysid`)
+							)
+						)
+					)
+				GROUP BY
+					`gs_id`,
+					`gs_name`
+				UNION ALL
+					SELECT
+						'total' AS `gs_id`,
+						'合计' AS `gs_name`,
+						0 AS `tp_capital_cost`,
+						(
+							sum(
+								(
+									(
+										(
+											(`b`.`profit_rate` / 100) * `a`.`contract_amount`
+										) * ifnull(if(b.term<12,b.term,12), 1)
+									) / 12
+								)
+							) / sum(
+								(
+									(
+										`a`.`contract_amount` * ifnull(if(b.term<12,b.term,12), 1)
+									) / 12
+								)
+							)
+						) AS `lm_capital_cost`,
+						0 AS `ty_capital_cost`
+					FROM
+						(
+							(
+								(
+									SELECT
+										`dw_db`.`m_fact_inmoney_finance`.`sysid` AS `sysid`,
+										`dw_db`.`m_fact_inmoney_finance`.`entertime` AS `entertime`,
+										`dw_db`.`m_fact_inmoney_finance`.`product_id` AS `product_id`,
+										`dw_db`.`m_fact_inmoney_finance`.`contract_amount` AS `contract_amount`
+									FROM
+										`dw_db`.`m_fact_inmoney_finance`
+									WHERE
+										(
+											date_format(
+												`dw_db`.`m_fact_inmoney_finance`.`entertime`,
+												'%Y-%m'
+											) = date_format(
+												(
+													(curdate() - INTERVAL 1 DAY) - INTERVAL 1 MONTH
+												),
+												'%Y-%m'
+											)
+										)
+								)
+							) `a`
+							LEFT JOIN (
+								SELECT
+									`dw_db`.`m_dim_product_finance`.`sysid` AS `sysid`,
+									`dw_db`.`m_dim_product_finance`.`id` AS `id`,
+									(
+										CASE
+										WHEN (
+											`dw_db`.`m_dim_product_finance`.`if_current` = '1'
+										) THEN
+											1
+										WHEN (
+											`dw_db`.`m_dim_product_finance`.`sysid` = 'ryan_fzlc_xx_hq'
+										) THEN
+											1
+										WHEN (
+											`dw_db`.`m_dim_product_finance`.`sysid` = 'ryan_fzlc_xs_hq'
+										) THEN
+											1
+										ELSE
+											`dw_db`.`m_dim_product_finance`.`limit_time`
+										END
+									) AS `term`,
+									`dw_db`.`m_dim_product_finance`.`profit_rate` AS `profit_rate`
+								FROM
+									`dw_db`.`m_dim_product_finance`
+							) `b` ON (
+								(
+									(`a`.`product_id` = `b`.`id`)
+									AND (`a`.`sysid` = `b`.`sysid`)
+								)
+							)
+						)
+					UNION ALL
+						SELECT
+							'total' AS `gs_id`,
+							'合计' AS `gs_name`,
+							(
+								sum(
+									(
+										(
+											(
+												(`b`.`profit_rate` / 100) * `a`.`contract_amount`
+											) * ifnull(if(b.term<12,b.term,12), 1)
+										) / 12
+									)
+								) / sum(
+									(
+										(
+											`a`.`contract_amount` * ifnull(if(b.term<12,b.term,12), 1)
+										) / 12
+									)
+								)
+							) AS `tp_capital_cost`,
+							0 AS `lm_capital_cost`,
+							0 AS `ty_capital_cost`
+						FROM
+							(
+								(
+									(
+										SELECT
+											`dw_db`.`m_fact_inmoney_finance`.`sysid` AS `sysid`,
+											`dw_db`.`m_fact_inmoney_finance`.`entertime` AS `entertime`,
+											`dw_db`.`m_fact_inmoney_finance`.`product_id` AS `product_id`,
+											`dw_db`.`m_fact_inmoney_finance`.`contract_amount` AS `contract_amount`
+										FROM
+											`dw_db`.`m_fact_inmoney_finance`
+										WHERE
+											(
+												date_format(
+													`dw_db`.`m_fact_inmoney_finance`.`entertime`,
+													'%Y-%m'
+												) = date_format(
+													(curdate() - INTERVAL 1 DAY),
+													'%Y-%m'
+												)
+											)
+									)
+								) `a`
+								LEFT JOIN (
+									SELECT
+										`dw_db`.`m_dim_product_finance`.`sysid` AS `sysid`,
+										`dw_db`.`m_dim_product_finance`.`id` AS `id`,
+										(
+											CASE
+											WHEN (
+												`dw_db`.`m_dim_product_finance`.`if_current` = '1'
+											) THEN
+												1
+											WHEN (
+												`dw_db`.`m_dim_product_finance`.`sysid` = 'ryan_fzlc_xx_hq'
+											) THEN
+												1
+											WHEN (
+												`dw_db`.`m_dim_product_finance`.`sysid` = 'ryan_fzlc_xs_hq'
+											) THEN
+												1
+											ELSE
+												`dw_db`.`m_dim_product_finance`.`limit_time`
+											END
+										) AS `term`,
+										`dw_db`.`m_dim_product_finance`.`profit_rate` AS `profit_rate`
+									FROM
+										`dw_db`.`m_dim_product_finance`
+								) `b` ON (
+									(
+										(`a`.`product_id` = `b`.`id`)
+										AND (`a`.`sysid` = `b`.`sysid`)
+									)
+								)
+							)
+						UNION ALL
+							SELECT
+								'total' AS `gs_id`,
+								'合计' AS `gs_name`,
+								0 AS `tp_capital_cost`,
+								0 AS `lm_capital_cost`,
+								(
+									sum(
+										(
+											(
+												(
+													(`b`.`profit_rate` / 100) * `a`.`contract_amount`
+												) * ifnull(if(b.term<12,b.term,12), 1)
+											) / 12
+										)
+									) / sum(
+										(
+											(
+												`a`.`contract_amount` * ifnull(if(b.term<12,b.term,12), 1)
+											) / 12
+										)
+									)
+								) AS `ty_capital_cost`
+							FROM
+								(
+									(
+										(
+											SELECT
+												`dw_db`.`m_fact_inmoney_finance`.`sysid` AS `sysid`,
+												`dw_db`.`m_fact_inmoney_finance`.`entertime` AS `entertime`,
+												`dw_db`.`m_fact_inmoney_finance`.`product_id` AS `product_id`,
+												`dw_db`.`m_fact_inmoney_finance`.`contract_amount` AS `contract_amount`
+											FROM
+												`dw_db`.`m_fact_inmoney_finance`
+											WHERE
+												(
+													date_format(
+														`dw_db`.`m_fact_inmoney_finance`.`entertime`,
+														'%Y'
+													) = date_format(
+														(curdate() - INTERVAL 1 DAY),
+														'%Y'
+													)
+												)
+										)
+									) `a`
+									LEFT JOIN (
+										SELECT
+											`dw_db`.`m_dim_product_finance`.`sysid` AS `sysid`,
+											`dw_db`.`m_dim_product_finance`.`id` AS `id`,
+											(
+												CASE
+												WHEN (
+													`dw_db`.`m_dim_product_finance`.`if_current` = '1'
+												) THEN
+													1
+												WHEN (
+													`dw_db`.`m_dim_product_finance`.`sysid` = 'ryan_fzlc_xx_hq'
+												) THEN
+													1
+												WHEN (
+													`dw_db`.`m_dim_product_finance`.`sysid` = 'ryan_fzlc_xs_hq'
+												) THEN
+													1
+												ELSE
+													`dw_db`.`m_dim_product_finance`.`limit_time`
+												END
+											) AS `term`,
+											`dw_db`.`m_dim_product_finance`.`profit_rate` AS `profit_rate`
+										FROM
+											`dw_db`.`m_dim_product_finance`
+									) `b` ON (
+										(
+											(`a`.`product_id` = `b`.`id`)
+											AND (`a`.`sysid` = `b`.`sysid`)
+										)
+									)
+								)
+	) `c`
+GROUP BY
+	`c`.`gs_id`,
+	`c`.`gs_name`
+		 * 
+		 * 
+		 */
+	}
+	
 
 }
