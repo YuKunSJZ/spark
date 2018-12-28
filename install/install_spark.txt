@@ -108,23 +108,6 @@ location:http://download.eclipse.org/releases/kepler
 War do not have lib:
 The jar dependencies for Eclipse to include in a war file not placed in WEB-INF/lib is not managed by the usual "project export/imports" but by a separate panel (3.6: Deployment Assembly, 3.5: Java EE Module Dependencies) in the preferences of the dynamic web project.
 
-JDBC_DRIVER=com.mysql.jdbc.Driver
-JDBC_URL=jdbc:mysql://localhost:3306/test_db
-JDBC_USER=root
-JDBC_PASS=mysqldb
-JDBC_DATASOURCE_POOL_SIZE=50
-
-SPARK_APP_NAME=UserAction
-SPARK_LOCAL=true
-
-PARAM_START_DATE=PARAM_START_DATE
-PARAM_END_DATE=PARAM_END_DATE
-
-COMPANY_JDBC_DRIVER=com.mysql.jdbc.Driver
-COMPANY_FUND_JDBC=jdbc:mysql://47.93.14.254:3306/guquan_zhengshi
-COMPANY_FUND_JDBC_USER=root
-COMPANY_FUND_JDBC_PASS=ruian1127yb99
-
 
 json:
 JSON ֵ
