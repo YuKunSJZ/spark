@@ -67,6 +67,38 @@
 	border:1px solid red;
 }
 
+#main .table_row{
+    margin: 2px 4px 2px 10px;
+    border: groove 1px;
+    float: left;
+    display: inline-flex;
+}
+
+#main .table_row_column_name{
+    margin: 16px 4px 10px 10px;
+    border: groove 1px;
+    float: left;
+    display: inline-flex;
+}
+
+#main .table_row_column_name .column_name{
+    float: left;
+    margin: 6px 1px 6px 6px;
+    border: groove 4px;
+    width: 48px;
+    height: 19px;
+    font-size: 12px;
+}
+
+#main .table_row .column{
+    float: left;
+    margin: 4px 1px 4px 6px;
+    border: groove 4px;
+    width: 48px;
+    height: 19px;
+    font-size: 12px;
+}
+
 #footer{
 	float:left;
 	width: 1000px; 
