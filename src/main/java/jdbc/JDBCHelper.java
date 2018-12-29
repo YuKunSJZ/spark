@@ -72,7 +72,7 @@ public class JDBCHelper {
 		PreparedStatement pstmt = null;
 		int rtn=0;
 		try {
-			System.out.println(sql.toString());
+			System.out.println("datasourceCnt=" + datasource.size() + sql.toString());
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			rtn = pstmt.executeUpdate();
@@ -82,6 +82,7 @@ public class JDBCHelper {
 		} finally {
 			if (conn != null) {
 				datasource.push(conn);
+
 			}
 		}
 		
@@ -93,7 +94,9 @@ public class JDBCHelper {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+
 		try {
+			System.out.println("datasourceCnt=" + datasource.size() + sql.toString());
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);		
 			rs = pstmt.executeQuery();

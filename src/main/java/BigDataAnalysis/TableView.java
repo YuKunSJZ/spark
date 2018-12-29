@@ -20,28 +20,39 @@ public class TableView {
 	public Table getTable() {
 		return myTable;
 	}
-	Base myBase;
+	
+	public Base myBase;
 	private Table myTable;
 	private BuildSQL myBuildSQL;
-
-
+	private ResultSet resultSet; 
+	
 	public TableView(String _tableName,Base _base) throws SQLException {
 		myBase = _base;
 		myBuildSQL = new BuildSQL(_base);
 		myBuildSQL.create(_tableName);
 		myTable=myBuildSQL.myTable;
-		
+		resultSet = getTableResultSet(false);
 	}
-		
-	public void getConlumnName() throws IOException {
-		myBase.printPage("<tr class=\"ColumnName\">");
-		for(String fieldName:myTable.fieldDict.keySet()) {
-			myBase.printPage("<td>" + myTable.fieldDict.get(fieldName).fieldAlias + "</td>" );
+	
+	public void kill() {
+		try {
+			resultSet.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		myBase.printPage("</tr>");
-
-		myBase.printPage("<br/>");
+		
 	}
+		
+//	public void getConlumnName() throws IOException {
+//		myBase.printPage("<tr class=\"ColumnName\">");
+//		for(String fieldName:myTable.fieldDict.keySet()) {
+//			myBase.printPage("<td>" + myTable.fieldDict.get(fieldName).fieldAlias + "</td>" );
+//		}
+//		myBase.printPage("</tr>");
+//
+//		myBase.printPage("<br/>");
+//	}
 	
 	public void getTableEditBanner() throws IOException {
 		myBase.printPage("<div>µ±«∞ ”Õº :  "+myTable.tableAlias+" ("+myTable.tableName+")</div>");
@@ -75,16 +86,25 @@ public class TableView {
 		return myAdb.getQueryRs(myBuildSQL.getSQL());
 		
 	}
-	public void printTableLines(ResultSet _resultSet) throws SQLException, IOException {
-		while (_resultSet.next()) {
-			myBase.printPage("<tr class=\"rowborder\">");
-			for(String tableField:myTable.fieldDict.keySet()) {
-				myBase.printPage("<td class=\"field\">");
-				myBase.printPage(Base.Format(_resultSet.getString(tableField), myTable.fieldDict.get(tableField).DataType, myTable.fieldDict.get(tableField).dataLength));
-				myBase.printPage("</td>");
-			}
-			myBase.printPage("</tr>");
+	public void printTableLines() throws SQLException, IOException {
+		myBase.printPage("<div class=\"table_row_column_name\">");
+		for(String fieldName:myTable.fieldDict.keySet()) {
+			myBase.printPage("<div class=\"column_name\">" + myTable.fieldDict.get(fieldName).fieldAlias + "</div>" );
 		}
+		myBase.printPage("</div>");
+		//myBase.printPage("<div class=\"TableRecordSet\">");
+		
+		while (resultSet.next()) {
+			myBase.printPage("<div class=\"table_row\">");
+			for(String tableField:myTable.fieldDict.keySet()) {
+				myBase.printPage("<div class=\"column\">");
+				myBase.printPage(Base.Format(resultSet.getString(tableField), myTable.fieldDict.get(tableField).DataType, myTable.fieldDict.get(tableField).dataLength));
+				myBase.printPage("</div>");
+			}
+			myBase.printPage("</div>");
+		}
+		
+		//myBase.printPage("</div>");
 	}
 	
 	public List<String> getSingleColumn(String _Column) throws SQLException {
@@ -120,8 +140,7 @@ public class TableView {
 	public void printTable() throws SQLException, IOException {
 		myBase.printPage("<table class=\"tableborder\">");
 		getTableEditBanner();
-		getConlumnName();
-		printTableLines(getTableResultSet(true));
+		printTableLines();
 		myBase.printPage("</table>");
 
 	}
@@ -129,14 +148,11 @@ public class TableView {
 	public void printTableEdit() throws SQLException, IOException {
 		myBase.printPage("<table>");
 		getTableEditBanner();
-		getConlumnName();
-		printTableLines(getTableResultSet(true));
+		printTableLines();
 		myBase.printPage("</table>");
 
 	}
 
-	
-	
 	public void testPrint() {
 		myTable.testPrint();
 	}

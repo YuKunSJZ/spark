@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 public class Base {
 	public HttpServletRequest request;
 	public HttpServletResponse response;
-	public String CustomerName="test_db";
 	
 	public enum DataTypeEnum{
 		INTEGER,

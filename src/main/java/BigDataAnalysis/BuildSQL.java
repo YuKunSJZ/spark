@@ -67,7 +67,7 @@ public class BuildSQL {
 					strB.append(tableField + "='" +myTable.fieldDict.get(tableField).Value + "' ");
 					counter = counter+1;
 				}
-		}
+			}
 		}
 		strB.append("limit " + limitStart + " , " + limitEnd + " ");
 		strB.append(";");
