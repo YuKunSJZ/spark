@@ -152,3 +152,7 @@ To open .html or .js file with highlighted JavaScript syntax:
 14. Right-click on .html or .js file -> "Open With" -> "Other..."
 15. Select "Internal editors"
 16. Select "Java Script Editor". Click "OK" (see JavaScript syntax is now highlighted )
+
+
+echart javaÀà´úÂë
+https://gitee.com/free/ECharts/repository/archive/master.zip

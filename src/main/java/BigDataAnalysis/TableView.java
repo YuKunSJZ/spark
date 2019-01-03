@@ -65,20 +65,20 @@ public class TableView {
 	}
 	
 	
-	public void getLeftMenu() throws IOException, SQLException {
-		TableView myTableView = new TableView("Links",myBase);
-		LinkedHashMap<String,String> myLinks = new LinkedHashMap<String,String>();
-		//myLinks.put(myTableView.getSingleColumn(_Column), value)
-		
-		
-		myBase.printPage("<div>站点："+myTable.tableName+"</div>");
-		myBase.printPage("<form action=\"TableEdit.jsp\" method=\"get\">");
-		myBase.printPage(" <input style=\"display:none\"  type=\"text\" name=\"Table\" value=\""+ myTable.tableName +"\" />");
-		myBase.printPage(" <input style=\"display:none\"  type=\"text\" name=\"TableAction\" value=\"Add\" />");
-		myBase.printPage(" <input type=\"submit\" value=\"添加记录\" />");
-		myBase.printPage("</form>");
-
-	}
+//	public void getLeftMenu() throws IOException, SQLException {
+//		TableView myTableView = new TableView("Links",myBase);
+//		LinkedHashMap<String,String> myLinks = new LinkedHashMap<String,String>();
+//		//myLinks.put(myTableView.getSingleColumn(_Column), value)
+//		
+//		
+//		myBase.printPage("<div>站点："+myTable.tableName+"</div>");
+//		myBase.printPage("<form action=\"TableEdit.jsp\" method=\"get\">");
+//		myBase.printPage(" <input style=\"display:none\"  type=\"text\" name=\"Table\" value=\""+ myTable.tableName +"\" />");
+//		myBase.printPage(" <input style=\"display:none\"  type=\"text\" name=\"TableAction\" value=\"Add\" />");
+//		myBase.printPage(" <input type=\"submit\" value=\"添加记录\" />");
+//		myBase.printPage("</form>");
+//
+//	}
 	
 	public ResultSet getTableResultSet(Boolean _isTableViewPage) {
 		myBuildSQL.isTableViewPage = _isTableViewPage;
@@ -87,13 +87,16 @@ public class TableView {
 		
 	}
 	public void printTableLines() throws SQLException, IOException {
+		myBase.printPage("<div class=\"table_head\">");
 		myBase.printPage("<div class=\"table_row_column_name\">");
 		for(String fieldName:myTable.fieldDict.keySet()) {
 			myBase.printPage("<div class=\"column_name\">" + myTable.fieldDict.get(fieldName).fieldAlias + "</div>" );
 		}
 		myBase.printPage("</div>");
+		myBase.printPage("</div>");
 		//myBase.printPage("<div class=\"TableRecordSet\">");
-		
+		myBase.printPage("<div class=\"table_content\">");
+
 		while (resultSet.next()) {
 			myBase.printPage("<div class=\"table_row\">");
 			for(String tableField:myTable.fieldDict.keySet()) {
@@ -103,8 +106,7 @@ public class TableView {
 			}
 			myBase.printPage("</div>");
 		}
-		
-		//myBase.printPage("</div>");
+		myBase.printPage("</div>");
 	}
 	
 	public List<String> getSingleColumn(String _Column) throws SQLException {
